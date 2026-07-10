@@ -71,3 +71,78 @@ web:
 ## 本地开发
 
 前后端可分别在各自仓库独立开发（前端 `npm run dev`，后端 `mvn spring-boot:run`）。本 compose 用于**联调与生产式部署**，不替代日常开发环境。
+
+## 服务器日常运维（阿里云）
+
+生产环境代码位于 `/opt/digital-garden/`，compose 与 `.env` 在 `deploy/` 目录。以下命令在 **Workbench / SSH** 中执行（阿里云 `admin` 用户需加 `sudo`）。
+
+```bash
+cd /opt/digital-garden/deploy
+```
+
+### 查看状态
+
+```bash
+sudo docker compose ps
+```
+
+### 重启全部服务
+
+```bash
+sudo docker compose --env-file .env restart
+```
+
+### 停止 / 启动
+
+```bash
+# 停止（数据卷保留）
+sudo docker compose down
+
+# 启动（不重新构建）
+sudo docker compose --env-file .env up -d
+```
+
+服务器重启后若网站打不开，执行：
+
+```bash
+cd /opt/digital-garden/deploy && sudo docker compose --env-file .env up -d
+```
+
+### 更新代码后重新部署
+
+```bash
+cd /opt/digital-garden
+sudo git -C digital-garden-site-server pull
+sudo git -C digital-garden-site-web pull
+sudo git -C deploy pull
+cd deploy
+sudo docker compose --env-file .env up -d --build
+```
+
+### 查看日志
+
+```bash
+cd /opt/digital-garden/deploy
+
+# 后端日志（Ctrl+C 退出）
+sudo docker compose logs -f server
+
+# 前端 / 数据库
+sudo docker compose logs -f web
+sudo docker compose logs -f mysql
+```
+
+### 查看后台密码
+
+```bash
+grep ADMIN_PASSWORD /opt/digital-garden/deploy/.env
+```
+
+### 健康检查
+
+```bash
+curl http://localhost/api/health
+```
+
+生产访问地址（备案前用 IP）：http://101.37.33.184
+
