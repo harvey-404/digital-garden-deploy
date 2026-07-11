@@ -110,6 +110,16 @@ cd /opt/digital-garden/deploy && sudo docker compose --env-file .env up -d
 
 ### 更新代码后重新部署
 
+**一键脚本（推荐）：**
+
+```bash
+cd /opt/digital-garden/deploy
+sudo git -C . pull
+sudo bash update.sh
+```
+
+**或手动执行：**
+
 ```bash
 cd /opt/digital-garden
 sudo git -C digital-garden-site-server pull
