@@ -7,11 +7,13 @@
 以下三个目录为同级关系：
 
 ```
-demo/
+digital-garden/
 ├── digital-garden-site-server/   # 后端仓库
 ├── digital-garden-site-web/      # 前端仓库
 └── deploy/                       # 本目录（统一部署）
 ```
+
+本地工作区根目录：`D:\workSpace\digital-garden`（与 `demo` 等其他项目同级）。
 
 ## 部署步骤
 
